@@ -59,11 +59,6 @@ setup(
              url = "http://www.clips.ua.ac.be/pages/pattern",
         packages = [
         "pattern",
-        "pattern.web",
-        "pattern.web.cache",
-        "pattern.web.imap",
-        "pattern.web.locale",
-        "pattern.web.oauth",
         "pattern.db",
         "pattern.text",
         "pattern.text.de",
@@ -77,14 +72,9 @@ setup(
         "pattern.text.it",
         "pattern.text.nl",
         "pattern.vector",
-        "pattern.vector.svm",
-        "pattern.graph",
-        "pattern.server"
+        "pattern.vector.svm"
     ],
     package_data = {
-        "pattern"                 : ["*.js"],
-        "pattern.web.cache"       : ["tmp/*"],
-        "pattern.web.locale"      : ["*"],
         "pattern.text.de"         : ["*.txt", "*.xml"],
         "pattern.text.en"         : ["*.txt", "*.xml", "*.slp"],
         "pattern.text.en.wordlist": ["*.txt"],
@@ -97,8 +87,6 @@ setup(
         "pattern.text.nl"         : ["*.txt", "*.xml"],
         "pattern.vector"          : ["*.txt"],
         "pattern.vector.svm"      : ["*.txt"],
-        "pattern.graph"           : ["*.js", "*.csv"],
-        "pattern.server"          : ["static/*"],
     },
     py_modules = [
         "pattern.metrics",
@@ -122,32 +110,17 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: JavaScript",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
-        "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
-        "Topic :: Multimedia :: Graphics",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
         "Topic :: Scientific/Engineering :: Visualization",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Text Processing :: Linguistic",
-        "Topic :: Text Processing :: Markup :: HTML"
     ],
     install_requires = [
-        "future",
-        "backports.csv",
-        "mysqlclient",
-        "beautifulsoup4",
-        "lxml",
-        "feedparser",
-        "pdfminer" if sys.version < "3" else "pdfminer.six",
         "numpy",
         "scipy",
         "nltk",
-        "python-docx",
-        "cherrypy",
-        "requests"
     ],
     zip_safe = False
 )
