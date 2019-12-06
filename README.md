@@ -43,11 +43,6 @@ Documentation
 
 For documentation and examples see the [user documentation](http://www.clips.ua.ac.be/pages/pattern). If you are a developer, go check out the [developer documentation](http://www.clips.ua.ac.be/pages/pattern-dev).
 
-Version
--------
-
-3.7
-
 License
 -------
 
