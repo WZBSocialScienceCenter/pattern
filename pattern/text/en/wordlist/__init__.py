@@ -33,7 +33,9 @@ class Wordlist(object):
 
     def _load(self):
         if not self._data:
-            self._data = open(os.path.join(MODULE, self._name + ".txt")).read().split(", ")
+            f = open(os.path.join(MODULE, self._name + ".txt"))
+            self._data = f.read().split(", ")
+            f.close()
 
     def __repr__(self):
         self._load()

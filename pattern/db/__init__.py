@@ -419,7 +419,7 @@ def csv_header_encode(field, type=STRING):
 def csv_header_decode(s):
     # csv_header_decode("age (INTEGER)") => ("age", INTEGER).
     p = r"STRING|INTEGER|FLOAT|TEXT|BLOB|BOOLEAN|DATE|"
-    p = re.match(r"(.*?) \((" + p + ")\)", s)
+    p = re.match(r"(.*?) \((" + p + r")\)", s)
     s = s.endswith(" ()") and s[:-3] or s
     return p and (string(p.group(1), default=None), p.group(2).lower()) or (string(s) or None, None)
 
@@ -491,12 +491,14 @@ class CSV(list):
         # Date objects are saved and loaded as strings, but it is easy to convert these back to dates:
         # - set a DATE field type for the column,
         # - or do Table.columns[x].map(lambda s: date(s))
-        data = open(path, "rU", encoding="utf-8")
-        data = data if not password else decrypt_string(data.read(), password)
+        f = open(path, "r", encoding="utf-8")
+
+        data = f if not password else decrypt_string(f.read(), password)
         data.seek(data.readline().startswith(BOM_UTF8) and 3 or 0)
         data = data if not password else BytesIO(data.replace("\r\n", "\n").replace("\r", "\n"))
         data = data if not preprocess else BytesIO(preprocess(data.read()))
         data = csvlib.reader(data, delimiter=separator)
+
         i, n = kwargs.get("start"), kwargs.get("count")
         if i is not None and n is not None:
             data = list(islice(data, i, i + n))
@@ -506,6 +508,10 @@ class CSV(list):
             data = list(islice(data, n))
         else:
             data = list(data)
+
+        f.close()
+        del f
+
         if headers:
             fields = [csv_header_decode(field) for field in data.pop(0)]
             fields += [(None, None)] * (max([0] + [len(row) for row in data]) - len(fields))

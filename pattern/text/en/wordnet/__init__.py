@@ -174,7 +174,7 @@ class Synset(object):
             if isinstance(synset, int):
                 synset = (synset, "NN")
             offset, pos = synset
-            self._wnsynset = wn._synset_from_pos_and_offset(_pattern2wordnet[pos] if pos in _pattern2wordnet else pos, offset)
+            self._wnsynset = wn.synset_from_pos_and_offset(_pattern2wordnet[pos] if pos in _pattern2wordnet else pos, offset)
         else:
             raise NotImplementedError
 
@@ -411,7 +411,9 @@ def map32(id, pos=NOUN):
     """
     global _map32_cache
     if not _map32_cache:
-        _map32_cache = open(os.path.join(MODULE, "dict", "index.32"), encoding="latin-1").readlines()
+        f = open(os.path.join(MODULE, "dict", "index.32"), encoding="latin-1")
+        _map32_cache = f.readlines()
+        f.close()
         _map32_cache = (x for x in _map32_cache if x[0] != ";") # comments
         _map32_cache = dict(x.strip().split(" ") for x in _map32_cache)
     k = pos in _map32_pos2 and pos or _map32_pos1.get(pos, "x")
@@ -452,7 +454,7 @@ class SentiWordNet(Sentiment):
         if pos in _pattern2wordnet:
             pos = _pattern2wordnet[pos]
         try:
-            s = wn._synset_from_pos_and_offset(pos, id)
+            s = wn.synset_from_pos_and_offset(pos, id)
             lemma = s.lemma_names()[0]
             return self[lemma]
         except:

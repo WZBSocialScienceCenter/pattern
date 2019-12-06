@@ -237,7 +237,9 @@ class TestCSV(unittest.TestCase):
         # Assert CSV file contents.
         v = self.csv
         v.save("test.csv", headers=True)
-        v = open("test.csv", "rb").read()
+        f = open("test.csv", "rb")
+        v = f.read()
+        f.close()
         v = db.decode_utf8(v.lstrip(codecs.BOM_UTF8))
         v = v.replace("\r\n", "\n")
         self.assertEqual(v,
