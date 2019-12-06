@@ -606,7 +606,9 @@ def _read(path, encoding="utf-8", comment=";;;"):
             if not line or (comment and line.startswith(comment)):
                 continue
             yield line
-    raise StopIteration
+        if hasattr(f, 'close') and callable(f.close):
+            f.close()
+    return
 
 
 class Lexicon(lazydict):

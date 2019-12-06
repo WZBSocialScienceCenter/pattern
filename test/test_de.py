@@ -212,7 +212,8 @@ class TestParser(unittest.TestCase):
         )
         # 3) Assert the accuracy of the German tagger.
         i, n = 0, 0
-        for sentence in open(os.path.join(PATH, "corpora", "tagged-de-tiger.txt")).readlines():
+        f = open(os.path.join(PATH, "corpora", "tagged-de-tiger.txt"))
+        for sentence in f.readlines():
             sentence = sentence.strip()
             s1 = [w.split("/") for w in sentence.split(" ")]
             s1 = [de.stts2penntreebank(w, pos) for w, pos in s1]
@@ -223,6 +224,7 @@ class TestParser(unittest.TestCase):
                 if s1[j][1] == s2[j][1]:
                     i += 1
                 n += 1
+        f.close()
         self.assertTrue(float(i) / n > 0.844)
         print("pattern.de.parse()")
 

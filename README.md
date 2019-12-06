@@ -1,75 +1,42 @@
-Pattern
-=======
+PatternLite
+===========
 
-[![Build Status](http://img.shields.io/travis/clips/pattern/master.svg?style=flat)](https://travis-ci.org/clips/pattern/branches)
-[![Coverage](https://img.shields.io/coveralls/clips/pattern/master.svg?style=flat)](https://coveralls.io/github/clips/pattern?branch=master)
-[![PyPi version](http://img.shields.io/pypi/v/pattern.svg?style=flat)](https://pypi.python.org/pypi/pattern)
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-green.svg?style=flat)](https://github.com/clips/pattern/blob/master/LICENSE.txt)
+[![PyPi version](http://img.shields.io/pypi/v/PatternLite.svg?style=flat)](https://pypi.org/project/PatternLite/)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-green.svg?style=flat)](https://github.com/WZBSocialScienceCenter/PatternLite/blob/master/LICENSE.txt)
 
-Pattern is a web mining module for Python. It has tools for:
 
- * Data Mining: web services (Google, Twitter, Wikipedia), web crawler, HTML DOM parser
+**This is a fork of the original [Pattern package](https://github.com/clips/pattern). It is a stripped down version of the original package and contains only the `text` modules (i.e. `pattern.de`, `pattern.en`, `pattern.es`, `pattern.fr`, `pattern.it`, `pattern.nl`, `pattern.ru`, the `vector` module and parts of the `db` module.**
+
+Apart from that, it fixes a few problems with the original package: 
+
+ * much fewer dependencies: now only requires *numpy, scipy* and *nltk*
+ * compatible with Python 3.6, 3.7, 3.8
+ * properly closes files (no more *"ResourceWarning: unclosed file"*)
+
+The remaining original features are:
+
  * Natural Language Processing: part-of-speech taggers, n-gram search, sentiment analysis, WordNet
  * Machine Learning: vector space model, clustering, classification (KNN, SVM, Perceptron)
- * Network Analysis: graph centrality and visualization.
 
-It is well documented, thoroughly tested with 350+ unit tests and comes bundled with 50+ examples. The source code is licensed under BSD and available from <http://www.clips.ua.ac.be/pages/pattern>.
-
-![Example workflow](https://raw.githubusercontent.com/clips/pattern/master/docs/g/pattern_schema.gif)
-
-Example
--------
-
-This example trains a classifier on adjectives mined from Twitter using Python 3. First, tweets that contain hashtag #win or #fail are collected. For example: *"$20 tip off a sweet little old lady today #win"*. The word part-of-speech tags are then parsed, keeping only adjectives. Each tweet is transformed to a vector, a dictionary of adjective → count items, labeled `WIN` or `FAIL`. The classifier uses the vectors to learn which other tweets look more like `WIN` or more like `FAIL`.
-
-```python
-from pattern.web import Twitter
-from pattern.en import tag
-from pattern.vector import KNN, count
-
-twitter, knn = Twitter(), KNN()
-
-for i in range(1, 3):
-    for tweet in twitter.search('#win OR #fail', start=i, count=100):
-        s = tweet.text.lower()
-        p = '#win' in s and 'WIN' or 'FAIL'
-        v = tag(s)
-        v = [word for word, pos in v if pos == 'JJ'] # JJ = adjective
-        v = count(v) # {'sweet': 1}
-        if v:
-            knn.train(v, type=p)
-
-print(knn.classify('sweet potato burger'))
-print(knn.classify('stupid autocorrect'))
-```
+For the original documentation, see <http://www.clips.ua.ac.be/pages/pattern>.
 
 Installation
 ------------
 
-Pattern supports Python 2.7 and Python 3.6. To install Pattern so that it is available in all your scripts, unzip the download and from the command line do:
+PatternLite supports Python 3.6, 3.7 and 3.8.
+
+If you have pip, you can automatically download and install from the [PyPI repository](https://pypi.org/project/PatternLite/):
+
 ```bash
-cd pattern-3.6
+pip install PatternLite
+```
+
+To install PatternLite from source, unzip the download and from the command line do:
+
+```bash
 python setup.py install
 ```
 
-If you have pip, you can automatically download and install from the [PyPI repository](https://pypi.python.org/pypi/Pattern):
-```bash
-pip install pattern
-```
-
-If none of the above works, you can make Python aware of the module in three ways:
-- Put the pattern folder in the same folder as your script.
-- Put the pattern folder in the standard location for modules so it is available to all scripts:
-  * `c:\python36\Lib\site-packages\` (Windows),
-  * `/Library/Python/3.6/site-packages/` (Mac OS X),
-  * `/usr/lib/python3.6/site-packages/` (Unix).
-- Add the location of the module to `sys.path` in your script, before importing it:
-
-```python
-MODULE = '/users/tom/desktop/pattern'
-import sys; if MODULE not in sys.path: sys.path.append(MODULE)
-from pattern.en import parsetree
-```
 
 Documentation
 -------------
@@ -79,7 +46,7 @@ For documentation and examples see the [user documentation](http://www.clips.ua.
 Version
 -------
 
-3.6
+3.7
 
 License
 -------
@@ -110,10 +77,8 @@ Pattern is bundled with the following data sets, algorithms and Python packages:
 - **English pluralization**, Damian Conway
 - **Spanish verb inflection**, Fred Jehle
 - **French verb inflection**, Bob Salita
-- **Graph JavaScript framework**, Aslak Hellesoy & Dave Hoover
 - **LIBSVM**, Chih-Chung Chang & Chih-Jen Lin
 - **LIBLINEAR**, Rong-En Fan et al.
-- **NetworkX centrality**, Aric Hagberg, Dan Schult & Pieter Swart
 - **spelling corrector**, Peter Norvig
 
 Acknowledgements

@@ -1,4 +1,6 @@
-#### PATTERN #######################################################################################
+#### PATTERNLITE ###################################################################################
+
+# Fork of "Pattern" package
 
 # Authors: Tom De Smedt <tom@organisms.be>, Walter Daelemans <walter.daelemans@ua.ac.be>
 # License: BSD License, see LICENSE.txt

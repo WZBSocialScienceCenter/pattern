@@ -11,6 +11,12 @@ from setuptools import setup
 
 from pattern import __version__
 
+
+here = os.path.abspath(os.path.dirname(__file__))
+
+with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
+
 #---------------------------------------------------------------------------------------------------
 # "python setup.py zip" will create the zipped distribution and checksum.
 
@@ -20,27 +26,16 @@ if sys.argv[-1] == "zip":
     import hashlib
     import re
 
-    n = "pattern-%s.zip" % __version__
+    n = "patternlite-%s.zip" % __version__
     p = os.path.join(os.path.dirname(os.path.realpath(__file__)))
     z = zipfile.ZipFile(os.path.join(p, "..", n), "w", zipfile.ZIP_DEFLATED)
     for root, folders, files in os.walk(p):
         for f in files:
             f = os.path.join(root, f)
-            # Exclude private settings.
-            if f.endswith(os.path.join("web", "api.py")):
-                d = "#--- PRIVATE"
-                s = open(f, "r", encoding="utf-8").read().split(d)
-                x = open(f, "w", encoding="utf-8")
-                x.write(s[0])
-                x.close()
             # Exclude revision history (.git).
             # Exclude development files (.dev).
             if not re.search(r"\.DS|\.git[^i]|\.pyc|\.dev|tmp", f):
-                z.write(f, os.path.join("pattern-" + __version__, os.path.relpath(f, p)))
-            if f.endswith(os.path.join("web", "api.py")):
-                x = open(f, "w", encoding="utf-8")
-                x.write(d.join(s))
-                x.close()
+                z.write(f, os.path.join("patternlite-" + __version__, os.path.relpath(f, p)))
     z.close()
     print(n)
     print(hashlib.sha256(open(z.filename).read()).hexdigest())
@@ -50,20 +45,17 @@ if sys.argv[-1] == "zip":
 # "python setup.py install" will install /pattern in /site-packages.
 
 setup(
-            name = "Pattern",
-         version = "3.6",
-     description = "Web mining module for Python.",
+            name = "PatternLite",
+         version = __version__,
+     description = "Stripped down, forked version of Pattern package (Web mining module for Python.)",
+    long_description=long_description,
+    long_description_content_type='text/markdown',
          license = "BSD",
-          author = "Tom De Smedt",
-    author_email = "tom@organisms.be",
-             url = "http://www.clips.ua.ac.be/pages/pattern",
+          author = "Markus Konrad",
+    author_email = "markus.konrad@wzb.eu",
+             url = "https://github.com/WZBSocialScienceCenter/patternlite",
         packages = [
         "pattern",
-        "pattern.web",
-        "pattern.web.cache",
-        "pattern.web.imap",
-        "pattern.web.locale",
-        "pattern.web.oauth",
         "pattern.db",
         "pattern.text",
         "pattern.text.de",
@@ -77,14 +69,9 @@ setup(
         "pattern.text.it",
         "pattern.text.nl",
         "pattern.vector",
-        "pattern.vector.svm",
-        "pattern.graph",
-        "pattern.server"
+        "pattern.vector.svm"
     ],
     package_data = {
-        "pattern"                 : ["*.js"],
-        "pattern.web.cache"       : ["tmp/*"],
-        "pattern.web.locale"      : ["*"],
         "pattern.text.de"         : ["*.txt", "*.xml"],
         "pattern.text.en"         : ["*.txt", "*.xml", "*.slp"],
         "pattern.text.en.wordlist": ["*.txt"],
@@ -97,8 +84,6 @@ setup(
         "pattern.text.nl"         : ["*.txt", "*.xml"],
         "pattern.vector"          : ["*.txt"],
         "pattern.vector.svm"      : ["*.txt"],
-        "pattern.graph"           : ["*.js", "*.csv"],
-        "pattern.server"          : ["static/*"],
     },
     py_modules = [
         "pattern.metrics",
@@ -122,32 +107,20 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: JavaScript",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
-        "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
-        "Topic :: Multimedia :: Graphics",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
         "Topic :: Scientific/Engineering :: Visualization",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Text Processing :: Linguistic",
-        "Topic :: Text Processing :: Markup :: HTML"
     ],
+    python_requires='>=3.6',
     install_requires = [
-        "future",
-        "backports.csv",
-        "mysqlclient",
-        "beautifulsoup4",
-        "lxml",
-        "feedparser",
-        "pdfminer" if sys.version < "3" else "pdfminer.six",
         "numpy",
         "scipy",
         "nltk",
-        "python-docx",
-        "cherrypy",
-        "requests"
     ],
     zip_safe = False
 )

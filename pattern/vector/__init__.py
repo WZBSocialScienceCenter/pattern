@@ -514,7 +514,9 @@ class Document(object):
             The given text file must be generated with Document.save().
         """
         # Open unicode file.
-        s = open(path, "rb").read()
+        f = open(path, "rb")
+        s = f.read()
+        f. close()
         s = s.lstrip(codecs.BOM_UTF8)
         s = decode_utf8(s)
         a = {}
@@ -1095,7 +1097,9 @@ class Model(object):
         if self._classifier:
             p = path + ".tmp"
             self._classifier.save(p, final)
-            self._classifier = open(p, "rb").read()
+            f = open(p, "rb")
+            self._classifier = f.read()
+            f.close()
             os.remove(p)
         f = gzip.GzipFile(path, "wb")
         f.write(pickle.dumps(self, 1))  # 1 = binary
@@ -3633,7 +3637,9 @@ class SVM(Classifier):
         # Unlink LIBSVM/LIBLINEAR binaries for cPickle.
         svm, model = self._svm, self._model
         self._svm = None
-        self._model = (open(path, "rb").read(),) + model[1:]
+        f = open(path, "rb")
+        self._model = (f.read(),) + model[1:]
+        f.close()
         Classifier.save(self, path, final)
         self._svm = svm
         self._model = model

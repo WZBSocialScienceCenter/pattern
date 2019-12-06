@@ -546,7 +546,8 @@ class TestParser(unittest.TestCase):
         # 7) Assert the accuracy of the English tagger.
         i, n = 0, 0
         for corpus, a in (("tagged-en-wsj.txt", (0.968, 0.945)), ("tagged-en-oanc.txt", (0.929, 0.932))):
-            for sentence in open(os.path.join(PATH, "corpora", corpus)).readlines():
+            f = open(os.path.join(PATH, "corpora", corpus))
+            for sentence in f.readlines():
                 sentence = sentence.strip()
                 s1 = [w.split("/") for w in sentence.split(" ")]
                 s2 = [[w for w, pos in s1]]
@@ -557,6 +558,7 @@ class TestParser(unittest.TestCase):
                         i += 1
                     n += 1
             #print(corpus, float(i) / n)
+            f.close()
             self.assertTrue(float(i) / n > (en.parser.model and a[0] or a[1]))
         print("pattern.en.parse()")
 
